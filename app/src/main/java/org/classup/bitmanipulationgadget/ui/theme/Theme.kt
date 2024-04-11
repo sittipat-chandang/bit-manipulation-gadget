@@ -22,12 +22,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = BMGOrangeDarker,
+
+    // I don't even know what primaryContainer actually changes.
+    // I use it for navigation bar color override because the name makes sense.
+    primaryContainer = BMGOrange,
 
     /* Other default colors to override
-    background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,
@@ -40,8 +41,8 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun BitManipulationGadgetTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    // KEEP DYNAMIC COLOR OFF BY DEFAULT. IT IS STUPID!
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

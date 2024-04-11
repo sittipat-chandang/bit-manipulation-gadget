@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.BitManipulationGadget" parent="android:Theme.Material.Light.NoActionBar"/>
+    <style name="Theme.BitManipulationGadget" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Using a separate theme to do this is stupid but easier. -->
+        <item name="android:navigationBarColor">@color/BMGOrangeDarker</item>
+    </style>
 </resources>

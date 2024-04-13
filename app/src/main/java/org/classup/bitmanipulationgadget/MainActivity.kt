@@ -31,7 +31,7 @@ import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BitManipulationGadgetTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -90,9 +90,9 @@ fun NavBar() {
             modifier = Modifier.padding(paddingValues)
         )
         {
-            composable(route = DestinationScreens.And.route) {}
-            composable(route = DestinationScreens.Or.route) {}
-            composable(route = DestinationScreens.Xor.route) {}
+            composable(route = DestinationScreens.And.route) {BaseDualInputScreen(BitwiseOperation.AND)}
+            composable(route = DestinationScreens.Or.route) {BaseDualInputScreen(BitwiseOperation.OR)}
+            composable(route = DestinationScreens.Xor.route) {BaseDualInputScreen(BitwiseOperation.XOR)}
             composable(route = DestinationScreens.Complement.route) {}
             composable(route = DestinationScreens.Shift.route) {}
         }

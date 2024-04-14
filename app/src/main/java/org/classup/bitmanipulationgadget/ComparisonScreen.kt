@@ -1,9 +1,12 @@
 package org.classup.bitmanipulationgadget
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -22,8 +25,18 @@ import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
+fun CalcResult(operation: BitwiseOperation, first: String, second: String) {
+    return when {
+        operation == BitwiseOperation.AND -> {
+
+        }
+
+        else -> {}
+    }
+}
+
 @Composable
-fun BaseDualInputScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
+fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
     Column {
@@ -87,8 +100,11 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SolutionCard(operation: BitwiseOperation, first: String, second: String) {
+    val pagerState = rememberPagerState(pageCount = {4})
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
@@ -97,10 +113,12 @@ fun SolutionCard(operation: BitwiseOperation, first: String, second: String) {
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
-        Column {
-            Text(text = first, fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-            Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-            Text(text = second, fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+        HorizontalPager(state = pagerState) {page ->
+            Column {
+                Text(text = convertInputToBinary(first), fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Text(text = convertInputToBinary(second), fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            }
         }
     }
 }

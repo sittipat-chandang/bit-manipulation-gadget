@@ -32,8 +32,6 @@ import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BitManipulationGadgetTheme
 
-data class Inputs(var first: String = "", var second: String = "")
-
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,19 +99,19 @@ fun NavBar() {
         )
         {
             composable(route = DestinationScreens.And.route) {
-                BaseDualInputScreen(BitwiseOperation.AND, firstAnd, secondAnd) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseOperation.AND, firstAnd, secondAnd) {newFirst, newSecond ->
                     firstAnd = newFirst
                     secondAnd = newSecond
                }
             }
             composable(route = DestinationScreens.Or.route) {
-                BaseDualInputScreen(BitwiseOperation.OR, firstOr, secondOr) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseOperation.OR, firstOr, secondOr) {newFirst, newSecond ->
                     firstOr = newFirst
                     secondOr = newSecond
                 }
             }
             composable(route = DestinationScreens.Xor.route) {
-                BaseDualInputScreen(BitwiseOperation.XOR, firstXor, secondXor) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseOperation.XOR, firstXor, secondXor) {newFirst, newSecond ->
                     firstXor = newFirst
                     secondXor = newSecond
                 }

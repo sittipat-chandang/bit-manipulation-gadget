@@ -6,9 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector;
 import androidx.compose.ui.res.vectorResource
 
-public class NavItemInfo (val label: String = "",
-                          val icon: ImageVector = Icons.Filled.Warning,
-                          val route: String = "") {
+public class NavItemInfo (val label: String = "", val icon: ImageVector = Icons.Filled.Warning, val route: String = "") {
     @Composable
     fun getAllNavItems(): List<NavItemInfo> {
         return listOf(

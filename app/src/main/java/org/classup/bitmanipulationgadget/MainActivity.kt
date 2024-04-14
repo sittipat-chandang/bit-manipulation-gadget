@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -30,6 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BitManipulationGadgetTheme
+
+data class Inputs(var first: String = "", var second: String = "")
 
 class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +58,13 @@ fun NavBar() {
         // TODO: Does mutableIntStateOf cause problems? If so, fallback to mutableStateOf.
         mutableIntStateOf(0)
     }
+
+    var firstAnd by remember {mutableStateOf("")}
+    var secondAnd by remember {mutableStateOf("")}
+    var firstOr by remember {mutableStateOf("")}
+    var secondOr by remember {mutableStateOf("")}
+    var firstXor by remember {mutableStateOf("")}
+    var secondXor by remember {mutableStateOf("")}
 
     Scaffold(
         bottomBar = {
@@ -90,9 +100,24 @@ fun NavBar() {
             modifier = Modifier.padding(paddingValues)
         )
         {
-            composable(route = DestinationScreens.And.route) {BaseDualInputScreen(BitwiseOperation.AND)}
-            composable(route = DestinationScreens.Or.route) {BaseDualInputScreen(BitwiseOperation.OR)}
-            composable(route = DestinationScreens.Xor.route) {BaseDualInputScreen(BitwiseOperation.XOR)}
+            composable(route = DestinationScreens.And.route) {
+                BaseDualInputScreen(BitwiseOperation.AND, firstAnd, secondAnd) {newFirst, newSecond ->
+                    firstAnd = newFirst
+                    secondAnd = newSecond
+               }
+            }
+            composable(route = DestinationScreens.Or.route) {
+                BaseDualInputScreen(BitwiseOperation.OR, firstOr, secondOr) {newFirst, newSecond ->
+                    firstOr = newFirst
+                    secondOr = newSecond
+                }
+            }
+            composable(route = DestinationScreens.Xor.route) {
+                BaseDualInputScreen(BitwiseOperation.XOR, firstXor, secondXor) {newFirst, newSecond ->
+                    firstXor = newFirst
+                    secondXor = newSecond
+                }
+            }
             composable(route = DestinationScreens.Complement.route) {}
             composable(route = DestinationScreens.Shift.route) {}
         }

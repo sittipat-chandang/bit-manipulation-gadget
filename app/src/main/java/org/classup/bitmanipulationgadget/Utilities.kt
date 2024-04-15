@@ -9,14 +9,20 @@ fun convertInputToBinary(input: String): String {
                 binaryValue
             }
             else {
-                "Invalid input"
+                "Invalid input!"
             }
         }
         input.startsWith("0x") -> {
             try {
-                val hexValue = input.substring(2).toLong(16)
-                val binaryValue = java.lang.Long.toBinaryString(hexValue)
-                binaryValue
+                val hexString = input.substring(2)
+                if (hexString.length > 16) {
+                    "Invalid input!"
+                }
+                else {
+                    val hexValue = hexString.toBigInteger(16)
+                    val binaryValue = hexValue.toString(2)
+                    binaryValue
+                }
             } catch (e: Exception) {
                 "Invalid input!"
             }

@@ -22,16 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.kufam
-import kotlin.math.ceil
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
-private fun calcCompare(operation: BitwiseOperation, first: String, second: String): String {
+private fun bitwiseCompare(operation: BitwiseOperation, first: String, second: String): String {
     val operableFirst: Long
     val operableSecond: Long
 
     try {
-        // Convert input(s) to binary first then to long so we can do comparison.
         operableFirst = first.toLong(2)
         operableSecond = second.toLong(2)
     } catch (e: Exception) {
@@ -58,16 +56,40 @@ private fun calcCompare(operation: BitwiseOperation, first: String, second: Stri
 fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
-    val firstBinary = convertToBinary(first)
-    val secondBinary = convertToBinary(second)
+    var firstBinary = convertToBinary(first)
+    var secondBinary = convertToBinary(second)
+    var result = bitwiseCompare(operation, firstBinary, secondBinary)
 
-    val result = calcCompare(operation, firstBinary, secondBinary)
+    var pages = 1
+
+    if (isValid(firstBinary) && (firstBinary.length > secondBinary.length || !isValid(secondBinary))) {
+        val padding = if (firstBinary.length % 16 > 0) 16 - firstBinary.length % 16 else 0
+        firstBinary = "0".repeat(padding) + firstBinary
+
+        if (isValid(secondBinary)) {
+            secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
+            result = "0".repeat(firstBinary.length - result.length) + result
+        }
+
+        pages = firstBinary.length / 16
+    }
+    else if (isValid(secondBinary)) {
+        val padding = if (secondBinary.length % 16 > 0) 16 - secondBinary.length % 16 else 0
+        secondBinary = "0".repeat(padding) + secondBinary
+
+        if (isValid(firstBinary)) {
+            firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
+            result = "0".repeat(secondBinary.length - result.length) + result
+        }
+
+        pages = secondBinary.length / 16
+    }
 
     Column {
         InputCard(operation, first, second) {newFirst, newSecond ->
             updateInputs(newFirst, newSecond)
         }
-        SolutionCard(operation, firstBinary, secondBinary, result)
+        SolutionCard(operation, firstBinary, secondBinary, result, pages)
     }
 }
 
@@ -77,7 +99,7 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent
     )
-    val textFieldTextstyle = TextStyle(fontSize = 24.sp, fontFamily = kufam, color = Color.Black)
+    val textFieldTextStyle = TextStyle(fontSize = 24.sp, fontFamily = kufam, color = Color.Black)
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -91,14 +113,14 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
         {
             TextField(
                 value = first,
-                textStyle = textFieldTextstyle,
+                textStyle = textFieldTextStyle,
                 onValueChange = {updateInputs(it, second)},
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(start=12.dp, bottom = 12.dp, top=12.dp)
+                    .padding(start = 12.dp, bottom = 12.dp, top = 12.dp)
             )
             Text(
                 text = operation.name,
@@ -111,14 +133,14 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
             )
             TextField(
                 value = second,
-                textStyle = textFieldTextstyle,
+                textStyle = textFieldTextStyle,
                 onValueChange = {updateInputs(first, it)},
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(end=12.dp, bottom = 12.dp, top=12.dp)
+                    .padding(end = 12.dp, bottom = 12.dp, top = 12.dp)
             )
         }
     }
@@ -126,13 +148,10 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary: String, result: String) {
+fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary: String, result: String, pages: Int) {
     // TODO: Paginate
 
-    val pagerState = rememberPagerState(pageCount = {
-        val longestInput = if (firstBinary.length > secondBinary.length) firstBinary.length else secondBinary.length
-        ceil((longestInput / 8).toDouble()).toInt()
-    })
+    val pagerState = rememberPagerState(pageCount = { pages })
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -145,7 +164,7 @@ fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary:
         HorizontalPager(state = pagerState) {page ->
             Column {
                 Text(
-                    text = firstBinary,
+                    text = if (isValid(firstBinary)) firstBinary.substring(16 * page, 16 * (page + 1)) else firstBinary,
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
@@ -153,13 +172,18 @@ fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary:
                 )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Text(
-                    text = secondBinary,
+                    text = if (isValid(secondBinary)) secondBinary.substring(16 * page, 16 * (page + 1)) else secondBinary,
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Text(text = result, fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Text(
+                    text = if (isValid(result)) secondBinary.substring(16 * page, 16 * (page + 1)) else secondBinary,
+                    fontSize = 26.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }

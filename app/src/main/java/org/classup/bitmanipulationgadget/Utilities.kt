@@ -3,41 +3,45 @@ package org.classup.bitmanipulationgadget
 const val INVALID_TEXT = "Invalid input!"
 
 fun convertToBinary(input: String): String {
-    return when {
-        input.startsWith("0b") -> {
-            val binaryValue = input.substring(2).trimStart('0')
+    var result = INVALID_TEXT
 
-            if (binaryValue.all {it == '0' || it == '1'} && binaryValue.length < 65) {
-                binaryValue
-            }
-            else {
-                INVALID_TEXT
+    when {
+        input.startsWith("0b") -> {
+            var binaryString = input.substring(2)
+
+            if (binaryString.isNotEmpty()) {
+                if (binaryString.all { it == '0' }) {
+                    result = "0"
+                }
+                else if (binaryString.all { it == '0' || it == '1' }) {
+                    binaryString = binaryString.trimStart('0')
+                    if ( binaryString.length < 65) {
+                        result = binaryString
+                    }
+                }
             }
         }
         input.startsWith("0x") -> {
             try {
                 val hexString = input.substring(2)
-                if (hexString.length > 16) {
-                    INVALID_TEXT
-                }
-                else {
+
+                if (hexString.length < 17) {
                     val hexValue = hexString.toBigInteger(16)
-                    val binaryValue = hexValue.toString(2)
-                    binaryValue
+                    result = hexValue.toString(2)
                 }
-            } catch (e: Exception) {
-                INVALID_TEXT
-            }
+            } catch (_: Exception) {}
         }
         else -> {
             try {
                 val decimalValue = input.toLong()
-                val binaryValue = java.lang.Long.toBinaryString(decimalValue)
-                binaryValue
-            } catch (e: Exception) {
-                INVALID_TEXT
-            }
+                result = java.lang.Long.toBinaryString(decimalValue)
+            } catch (_: Exception) {}
         }
     }
+
+    return result
 }
 
+fun isValid(bmgText: String): Boolean {
+    return bmgText != INVALID_TEXT
+}

@@ -1,22 +1,24 @@
 package org.classup.bitmanipulationgadget
 
-fun convertInputToBinary(input: String): String {
+const val INVALID_TEXT = "Invalid input!"
+
+fun convertToBinary(input: String): String {
     return when {
         input.startsWith("0b") -> {
-            val binaryValue = input.substring(2)
+            val binaryValue = input.substring(2).trimStart('0')
 
             if (binaryValue.all {it == '0' || it == '1'} && binaryValue.length < 65) {
                 binaryValue
             }
             else {
-                "Invalid input!"
+                INVALID_TEXT
             }
         }
         input.startsWith("0x") -> {
             try {
                 val hexString = input.substring(2)
                 if (hexString.length > 16) {
-                    "Invalid input!"
+                    INVALID_TEXT
                 }
                 else {
                     val hexValue = hexString.toBigInteger(16)
@@ -24,7 +26,7 @@ fun convertInputToBinary(input: String): String {
                     binaryValue
                 }
             } catch (e: Exception) {
-                "Invalid input!"
+                INVALID_TEXT
             }
         }
         else -> {
@@ -33,8 +35,9 @@ fun convertInputToBinary(input: String): String {
                 val binaryValue = java.lang.Long.toBinaryString(decimalValue)
                 binaryValue
             } catch (e: Exception) {
-                "Invalid input!"
+                INVALID_TEXT
             }
         }
     }
 }
+

@@ -22,16 +22,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.kufam
+import kotlin.math.ceil
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
-fun CalcResult(operation: BitwiseOperation, first: String, second: String) {
-    return when {
-        operation == BitwiseOperation.AND -> {
+private fun calcCompare(operation: BitwiseOperation, first: String, second: String): String {
+    val operableFirst: Long
+    val operableSecond: Long
 
+    try {
+        // Convert input(s) to binary first then to long so we can do comparison.
+        operableFirst = first.toLong(2)
+        operableSecond = second.toLong(2)
+    } catch (e: Exception) {
+        return INVALID_TEXT
+    }
+
+    return when (operation) {
+        BitwiseOperation.AND -> {
+            convertToBinary((operableFirst and operableSecond).toString())
         }
-
-        else -> {}
+        BitwiseOperation.OR -> {
+            convertToBinary((operableFirst or operableSecond).toString())
+        }
+        BitwiseOperation.XOR -> {
+            convertToBinary((operableFirst xor operableSecond).toString())
+        }
+        else -> {
+            INVALID_TEXT
+        }
     }
 }
 
@@ -39,11 +58,16 @@ fun CalcResult(operation: BitwiseOperation, first: String, second: String) {
 fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
+    val firstBinary = convertToBinary(first)
+    val secondBinary = convertToBinary(second)
+
+    val result = calcCompare(operation, firstBinary, secondBinary)
+
     Column {
         InputCard(operation, first, second) {newFirst, newSecond ->
             updateInputs(newFirst, newSecond)
         }
-        SolutionCard(operation, first, second)
+        SolutionCard(operation, firstBinary, secondBinary, result)
     }
 }
 
@@ -74,11 +98,11 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(start=12.dp, bottom = 12.dp, top=12.dp)
             )
             Text(
                 text = operation.name,
-                fontSize = 28.sp,
+                fontSize = 26.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
@@ -94,7 +118,7 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(end=12.dp, bottom = 12.dp, top=12.dp)
             )
         }
     }
@@ -102,8 +126,13 @@ fun InputCard(operation: BitwiseOperation, first: String, second:String, updateI
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SolutionCard(operation: BitwiseOperation, first: String, second: String) {
-    val pagerState = rememberPagerState(pageCount = {4})
+fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary: String, result: String) {
+    // TODO: Paginate
+
+    val pagerState = rememberPagerState(pageCount = {
+        val longestInput = if (firstBinary.length > secondBinary.length) firstBinary.length else secondBinary.length
+        ceil((longestInput / 8).toDouble()).toInt()
+    })
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -115,9 +144,22 @@ fun SolutionCard(operation: BitwiseOperation, first: String, second: String) {
     {
         HorizontalPager(state = pagerState) {page ->
             Column {
-                Text(text = convertInputToBinary(first), fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Text(
+                    text = firstBinary,
+                    fontSize = 26.sp,
+                    color= Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-                Text(text = convertInputToBinary(second), fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+                Text(
+                    text = secondBinary,
+                    fontSize = 26.sp,
+                    color= Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(text = result, fontSize = 26.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
             }
         }
     }

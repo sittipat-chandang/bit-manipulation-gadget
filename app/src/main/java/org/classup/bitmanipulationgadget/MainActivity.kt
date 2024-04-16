@@ -53,7 +53,6 @@ class MainActivity: ComponentActivity() {
 fun NavBar() {
     val navController = rememberNavController()
     var navSelectedItem by remember {
-        // TODO: Does mutableIntStateOf cause problems? If so, fallback to mutableStateOf.
         mutableIntStateOf(0)
     }
 

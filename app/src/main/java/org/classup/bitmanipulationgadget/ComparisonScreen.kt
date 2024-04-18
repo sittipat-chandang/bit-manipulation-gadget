@@ -1,9 +1,10 @@
 package org.classup.bitmanipulationgadget
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -27,7 +28,7 @@ import java.math.BigInteger
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
-private fun bitwiseCompare(operation: BitwiseOperation, first: String, second: String): String {
+private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, secondBinary: String): String {
     val operableFirst: BigInteger
     val operableSecond: BigInteger
 
@@ -37,21 +38,21 @@ private fun bitwiseCompare(operation: BitwiseOperation, first: String, second: S
            will be equal to 01111111111111111111111111111111111111111111111111111111111111111,
            which adds up to 65 bits.
         */
-        operableFirst = first.toBigInteger(2)
-        operableSecond = second.toBigInteger(2)
+        operableFirst = firstBinary.toBigInteger(2)
+        operableSecond = secondBinary.toBigInteger(2)
     } catch (e: Exception) {
         return INVALID_TEXT
     }
 
     return when (operation) {
         BitwiseOperation.AND -> {
-            convertToBinary((operableFirst and operableSecond).toString())
+            (operableFirst and operableSecond).toString(2)
         }
         BitwiseOperation.OR -> {
-            convertToBinary((operableFirst or operableSecond).toString())
+            (operableFirst or operableSecond).toString(2)
         }
         BitwiseOperation.XOR -> {
-            convertToBinary((operableFirst xor operableSecond).toString())
+            (operableFirst xor operableSecond).toString(2)
         }
         else -> {
             INVALID_TEXT
@@ -63,28 +64,26 @@ private fun bitwiseCompare(operation: BitwiseOperation, first: String, second: S
 fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
-    var firstBinary = convertToBinary(first)
-    var secondBinary = convertToBinary(second)
+    var firstBinary = inputTo64Binary(first)
+    var secondBinary = inputTo64Binary(second)
     var result = bitwiseCompare(operation, firstBinary, secondBinary)
 
     var pages = 1
 
-    if (isValid(firstBinary) && (firstBinary.length > secondBinary.length || !isValid(secondBinary))) {
-        val padding = if (firstBinary.length % 16 > 0) 16 - firstBinary.length % 16 else 0
-        firstBinary = "0".repeat(padding) + firstBinary
+    if (bmgTextIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgTextIsValid(secondBinary))) {
+        firstBinary = padBinary16Divisible(firstBinary)
 
-        if (isValid(secondBinary)) {
+        if (bmgTextIsValid(secondBinary)) {
             secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
             result = "0".repeat(firstBinary.length - result.length) + result
         }
 
         pages = firstBinary.length / 16
     }
-    else if (isValid(secondBinary)) {
-        val padding = if (secondBinary.length % 16 > 0) 16 - secondBinary.length % 16 else 0
-        secondBinary = "0".repeat(padding) + secondBinary
+    else if (bmgTextIsValid(secondBinary)) {
+        secondBinary = padBinary16Divisible(secondBinary)
 
-        if (isValid(firstBinary)) {
+        if (bmgTextIsValid(firstBinary)) {
             firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
             result = "0".repeat(secondBinary.length - result.length) + result
         }
@@ -92,7 +91,7 @@ fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String,
         pages = secondBinary.length / 16
     }
 
-    Column {
+    Column (verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxHeight()) {
         InputCard(operation, first, second) {newFirst, newSecond ->
             updateInputs(newFirst, newSecond)
         }
@@ -170,15 +169,15 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
         HorizontalPager(state = pagerState) {page ->
             Column {
                 Text(
-                    text = if (isValid(firstBinary)) firstBinary.substring(16 * page, 16 * (page + 1)) else "FIRST INPUT",
+                    text = if (bmgTextIsValid(firstBinary)) spaceEvery4th(firstBinary.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+                    modifier = Modifier.fillMaxWidth().padding(top = 9.dp)
                 )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Text(
-                    text = if (isValid(secondBinary)) secondBinary.substring(16 * page, 16 * (page + 1)) else "SECOND INPUT",
+                    text = if (bmgTextIsValid(secondBinary)) spaceEvery4th(secondBinary.substring(16 * page, 16 * (page + 1))) else "SECOND INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
@@ -186,7 +185,7 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
                 )
                 Text(
                     // TODO: Color coding
-                    text = if (isValid(result)) result.substring(16 * page, 16 * (page + 1)) else "RESULT",
+                    text = if (bmgTextIsValid(result)) spaceEvery4th(result.substring(16 * page, 16 * (page + 1))) else "RESULT",
                     fontSize = 26.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

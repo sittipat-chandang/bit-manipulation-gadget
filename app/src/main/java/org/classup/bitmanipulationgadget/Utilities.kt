@@ -2,7 +2,8 @@ package org.classup.bitmanipulationgadget
 
 const val INVALID_TEXT = "Invalid input!"
 
-fun convertToBinary(input: String): String {
+fun inputTo64Binary(input: String): String {
+    // Enforces 64 bits limit.
     var result = INVALID_TEXT
 
     when {
@@ -46,11 +47,11 @@ fun bmgTextIsValid(bmgText: String): Boolean {
     return bmgText != INVALID_TEXT
 }
 
-fun spaceEveryFourth(string: String): String {
+fun spaceEvery4th(string: String): String {
     return string.replace(" ", "").chunked(4).joinToString(" ")
 }
 
-fun padBinarySixteenDivisible(binaryString: String): String {
+fun padBinary16Divisible(binaryString: String): String {
     val padding = if (binaryString.length % 16 > 0) 16 - binaryString.length % 16 else 0
     return "0".repeat(padding) + binaryString
 }

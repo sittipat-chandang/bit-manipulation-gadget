@@ -42,6 +42,15 @@ fun convertToBinary(input: String): String {
     return result
 }
 
-fun isValid(bmgText: String): Boolean {
+fun bmgTextIsValid(bmgText: String): Boolean {
     return bmgText != INVALID_TEXT
+}
+
+fun spaceEveryFourth(string: String): String {
+    return string.replace(" ", "").chunked(4).joinToString(" ")
+}
+
+fun padBinarySixteenDivisible(binaryString: String): String {
+    val padding = if (binaryString.length % 16 > 0) 16 - binaryString.length % 16 else 0
+    return "0".repeat(padding) + binaryString
 }

@@ -2,9 +2,11 @@ package org.classup.bitmanipulationgadget
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.classup.bitmanipulationgadget.ui.theme.BMGPageIndicator
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
@@ -73,6 +76,16 @@ fun spaceEvery4th(string: String): String {
 fun padBinary16Divisible(binaryString: String): String {
     val padding = if (binaryString.length % 16 > 0) 16 - binaryString.length % 16 else 0
     return "0".repeat(padding) + binaryString
+}
+
+@Composable
+fun DebugHighlightParent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .border(width = 12.dp, color = Color.Red) // Adjust width and color as needed
+            .background(Color.Transparent) // Optional: Set background color
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)

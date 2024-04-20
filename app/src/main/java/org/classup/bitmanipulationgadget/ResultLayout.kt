@@ -1,6 +1,5 @@
 package org.classup.bitmanipulationgadget
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -21,11 +20,9 @@ import kotlin.math.ceil
 
 @Composable
 fun ResultLayout(result: String) {
-    Column {
-        BinaryResult(result)
-        DecimalResult(result)
-        HexResult(result)
-    }
+    BinaryResult(result)
+    DecimalResult(result)
+    HexResult(result)
 }
 
 @Composable
@@ -64,7 +61,9 @@ private fun BinaryResult(result: String) {
             text = coloredResult,
             fontSize = 26.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = 9.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 9.dp)
         )
     }
 }

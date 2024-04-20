@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,14 +32,13 @@ import org.classup.bitmanipulationgadget.ui.theme.BMGTextBrighter
 import kotlin.math.ceil
 
 @Composable
-private fun ColumnScope.BinaryResult(result: String) {
+private fun BinaryResult(result: String) {
     val padBits = "0000 0000 0000 0000"
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(9.dp)
-            .weight(2.3f),
+            .padding(10.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -75,7 +73,7 @@ private fun ColumnScope.BinaryResult(result: String) {
 }
 
 @Composable
-private fun ColumnScope.DecimalResult(result: String) {
+private fun DecimalResult(result: String) {
     val decimalResult: String = if (bmgTextIsValid(result)) {
         result.toULong(2).toLong().toString()
     }
@@ -86,8 +84,7 @@ private fun ColumnScope.DecimalResult(result: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(9.dp)
-            .weight(1f),
+            .padding(10.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -103,7 +100,7 @@ private fun ColumnScope.DecimalResult(result: String) {
 }
 
 @Composable
-private fun ColumnScope.HexResult(result: String) {
+private fun HexResult(result: String) {
     var hexResult: String
 
     hexResult = if (bmgTextIsValid(result)) {
@@ -118,8 +115,7 @@ private fun ColumnScope.HexResult(result: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(9.dp)
-            .weight(1f),
+            .padding(9.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -135,10 +131,10 @@ private fun ColumnScope.HexResult(result: String) {
 }
 
 @Composable
-fun ResultLayout(result: String, columnScope: ColumnScope) {
-    columnScope.BinaryResult(result)
-    columnScope.DecimalResult(result)
-    columnScope.HexResult(result)
+fun ResultLayout(result: String) {
+    BinaryResult(result)
+    DecimalResult(result)
+    HexResult(result)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -150,7 +146,7 @@ fun PageIndicator (pages: Int, pagerState: PagerState) {
         Modifier
             .wrapContentHeight()
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(bottom = 18.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Bottom
     )

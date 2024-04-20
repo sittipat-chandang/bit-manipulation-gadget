@@ -4,11 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -90,7 +91,13 @@ fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String,
         pages = secondBinary.length / 16
     }
 
-    Column (verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxHeight()) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+        .fillMaxWidth()
+        .verticalScroll(rememberScrollState())
+    )
+    {
         InputCard(operation, first, second) {newFirst, newSecond ->
             updateInputs(newFirst, newSecond)
         }
@@ -185,7 +192,6 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    // TODO: Color coding
                     text = if (bmgTextIsValid(result)) spaceEvery4th(result.substring(16 * page, 16 * (page + 1))) else "RESULT",
                     fontSize = 26.sp,
                     textAlign = TextAlign.Center,

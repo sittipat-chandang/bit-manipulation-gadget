@@ -1,7 +1,8 @@
 package org.classup.bitmanipulationgadget
 
-import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -9,7 +10,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -32,9 +32,9 @@ fun ResultLayout(result: String) {
 
 @Composable
 private fun BinaryResult(result: String) {
-    // How the final text is achieved is so moronic but works.
+    // How the final text is achieved is so moronic but it works.
+
     val padBits = "0000 0000 0000 0000"
-    val reversedResult = result.reversed()
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -45,13 +45,21 @@ private fun BinaryResult(result: String) {
     )
     {
         val coloredResult = buildAnnotatedString {
-            val rowCount = ceil((result.length / 16).toDouble())
+            val rowCountIndex = if (bmgTextIsValid(result)) ceil((result.length / 16).toDouble()).toInt() - 1 else 0
 
-            for (i in 3 downTo 0) {
-                val color: Color = if (i % 2 == 0) BMGTextBrighter else BMGText
+            // Keep calm and do the padding first.
+            for (i in 0 until 4 - rowCountIndex) {
+                withStyle(style = SpanStyle(color = BMGText)) {
+                    append(padBits + if (i == 3) "" else "\n")
+                }
+            }
 
-                withStyle(style = SpanStyle(color = color)) {
-                    append((if (i < rowCount) spaceEvery4th(reversedResult.substring(i * 16, i * 16 + 16).reversed()) else padBits) + "\n")
+            if (rowCountIndex > 0) {
+                // Then, draw the answer after.
+                for (i in 0 until rowCountIndex + 1) {
+                    withStyle(style = SpanStyle(color = BMGTextBrighter)) {
+                        append(spaceEvery4th(result.substring(i * 16, i * 16 + 16)) + if (i == rowCountIndex) "" else "\n")
+                    }
                 }
             }
         }
@@ -60,7 +68,7 @@ private fun BinaryResult(result: String) {
             text = coloredResult,
             fontSize = 26.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(top = 9.dp)
         )
     }
 }

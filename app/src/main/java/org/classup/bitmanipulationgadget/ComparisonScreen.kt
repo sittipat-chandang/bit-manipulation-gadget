@@ -91,7 +91,7 @@ fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String,
         pages = secondBinary.length / 16
     }
 
-    Column (verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxHeight()) {
+    Column (verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxHeight()) {
         InputCard(operation, first, second) {newFirst, newSecond ->
             updateInputs(newFirst, newSecond)
         }

@@ -172,7 +172,9 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(top = 9.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 9.dp)
                 )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Text(
@@ -191,5 +193,7 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
                 )
             }
         }
+
+        PageIndicator(pages, pagerState)
     }
 }

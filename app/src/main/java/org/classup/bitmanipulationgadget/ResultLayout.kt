@@ -30,8 +30,6 @@ fun ResultLayout(result: String) {
 
 @Composable
 private fun BinaryResult(result: String) {
-    // How the final text is achieved is so moronic but it works.
-
     val padBits = "0000 0000 0000 0000"
 
     ElevatedCard(
@@ -74,7 +72,7 @@ private fun BinaryResult(result: String) {
 @Composable
 private fun DecimalResult(result: String) {
     val decimalResult: String = if (bmgTextIsValid(result)) {
-        result.toBigInteger(2).toString()
+        result.toULong(2).toLong().toString()
     }
     else {
         "DECIMAL RESULT"
@@ -94,13 +92,12 @@ private fun DecimalResult(result: String) {
     }
 }
 
-@OptIn(ExperimentalStdlibApi::class)
 @Composable
 private fun HexResult(result: String) {
     var hexResult: String
 
     hexResult = if (bmgTextIsValid(result)) {
-        "0x" + result.toBigInteger(2).toString(16)
+        "0x" + result.toULong(2).toString(16)
     }
     else {
         "HEXADECIMAL RESULT"

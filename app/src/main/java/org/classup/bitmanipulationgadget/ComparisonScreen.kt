@@ -24,13 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.kufam
-import java.math.BigInteger
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
 private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, secondBinary: String): String {
-    val operableFirst: BigInteger
-    val operableSecond: BigInteger
+    val operableFirst: ULong
+    val operableSecond: ULong
 
     try {
         /* Can't use Long here because the parser doesn't treat the first bit as a sign bit.
@@ -38,8 +37,8 @@ private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, sec
            will be equal to 01111111111111111111111111111111111111111111111111111111111111111,
            which adds up to 65 bits.
         */
-        operableFirst = firstBinary.toBigInteger(2)
-        operableSecond = secondBinary.toBigInteger(2)
+        operableFirst = firstBinary.toULong(2)
+        operableSecond = secondBinary.toULong(2)
     } catch (e: Exception) {
         return INVALID_TEXT
     }

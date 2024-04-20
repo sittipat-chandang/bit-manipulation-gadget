@@ -25,9 +25,10 @@ fun inputTo64Binary(input: String): String {
         input.startsWith("0x") -> {
             try {
                 val hexString = input.substring(2)
+                val regexPattern = "[a-f0-9A-F]+".toRegex()  // Disallow arithmetic signs.
 
-                if (hexString.length < 17) {
-                    val hexValue = hexString.toBigInteger(16)
+                if (hexString.length < 17 && regexPattern.matches(hexString)) {
+                    val hexValue = hexString.toULong(16)
                     result = hexValue.toString(2)
                 }
             } catch (_: Exception) {}

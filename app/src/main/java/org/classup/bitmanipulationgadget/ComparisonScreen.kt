@@ -19,11 +19,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
+import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
@@ -173,6 +178,23 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
     )
     {
         HorizontalPager(state = pagerState) {page ->
+            val formattedResult: AnnotatedString
+
+            if (bmgTextIsValid(result)) {
+                val splittedResult = spaceEvery4th(result.substring(16 * page, 16 * (page + 1)))
+
+                formattedResult = buildAnnotatedString {
+                    for (i in splittedResult.indices) {
+                        withStyle(style = SpanStyle(color = if (splittedResult[i] == '1') Color.Green else Color.Red)) {
+                            append(splittedResult[i])
+                        }
+                    }
+                }
+            }
+            else {
+                formattedResult = buildAnnotatedString { append("RESULT") }
+            }
+
             Column {
                 Text(
                     text = if (bmgTextIsValid(firstBinary)) spaceEvery4th(firstBinary.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
@@ -192,7 +214,7 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = if (bmgTextIsValid(result)) spaceEvery4th(result.substring(16 * page, 16 * (page + 1))) else "RESULT",
+                    text = formattedResult,
                     fontSize = 26.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

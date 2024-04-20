@@ -17,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import org.classup.bitmanipulationgadget.ui.theme.BMGPageIndicator
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
+import java.util.Locale
 
 const val INVALID_TEXT = "Invalid input!"
 
@@ -28,7 +30,7 @@ fun inputTo64Binary(input: String): String {
     var result = INVALID_TEXT
 
     when {
-        input.startsWith("0b") -> {
+        input.lowercase(Locale.ENGLISH).startsWith("0b") -> {
             var binaryString = input.substring(2)
 
             if (binaryString.isNotEmpty()) {
@@ -43,7 +45,7 @@ fun inputTo64Binary(input: String): String {
                 }
             }
         }
-        input.startsWith("0x") -> {
+        input.lowercase(Locale.ENGLISH).startsWith("0x") -> {
             try {
                 val hexString = input.substring(2)
                 val regexPattern = "[a-f0-9A-F]+".toRegex()  // Disallow arithmetic signs.

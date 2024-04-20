@@ -1,8 +1,6 @@
 package org.classup.bitmanipulationgadget
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -45,20 +43,20 @@ private fun BinaryResult(result: String) {
     )
     {
         val coloredResult = buildAnnotatedString {
-            val rowCountIndex = if (bmgTextIsValid(result)) ceil((result.length / 16).toDouble()).toInt() - 1 else 0
+            val rowCount = if (bmgTextIsValid(result)) ceil((result.length / 16).toDouble()).toInt() else 0
 
             // Keep calm and do the padding first.
-            for (i in 0 until 4 - rowCountIndex) {
+            for (i in 0 until 4 - rowCount) {
                 withStyle(style = SpanStyle(color = BMGText)) {
                     append(padBits + if (i == 3) "" else "\n")
                 }
             }
 
-            if (rowCountIndex > 0) {
+            if (rowCount > 0) {
                 // Then, draw the answer after.
-                for (i in 0 until rowCountIndex + 1) {
+                for (i in 0 until rowCount) {
                     withStyle(style = SpanStyle(color = BMGTextBrighter)) {
-                        append(spaceEvery4th(result.substring(i * 16, i * 16 + 16)) + if (i == rowCountIndex) "" else "\n")
+                        append(spaceEvery4th(result.substring(i * 16, i * 16 + 16)) + if (i == rowCount - 1) "" else "\n")
                     }
                 }
             }

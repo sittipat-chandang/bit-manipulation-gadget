@@ -10,11 +10,11 @@ public class NavItemInfo (val label: String = "", val icon: ImageVector = Icons.
     @Composable
     fun getAllNavItems(): List<NavItemInfo> {
         return listOf(
-            NavItemInfo("AND", ImageVector.vectorResource(R.drawable.and), DestinationScreens.And.route),
-            NavItemInfo("OR", ImageVector.vectorResource(R.drawable.or), DestinationScreens.Or.route),
-            NavItemInfo("XOR", ImageVector.vectorResource(R.drawable.xor), DestinationScreens.Xor.route),
-            NavItemInfo("COMP", ImageVector.vectorResource(R.drawable.complement), DestinationScreens.Complement.route),
-            NavItemInfo("SHIFT", ImageVector.vectorResource(R.drawable.shift), DestinationScreens.Shift.route)
+            NavItemInfo("AND", ImageVector.vectorResource(R.drawable.and), Destinations.And.route),
+            NavItemInfo("OR", ImageVector.vectorResource(R.drawable.or), Destinations.Or.route),
+            NavItemInfo("XOR", ImageVector.vectorResource(R.drawable.xor), Destinations.Xor.route),
+            NavItemInfo("COMP", ImageVector.vectorResource(R.drawable.complement), Destinations.Complement.route),
+            NavItemInfo("SHIFT", ImageVector.vectorResource(R.drawable.shift), Destinations.Shift.route)
         )
     }
 }

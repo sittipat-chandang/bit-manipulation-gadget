@@ -93,30 +93,30 @@ fun NavBar() {
     {
         paddingValues -> NavHost(
             navController = navController,
-            startDestination = DestinationScreens.And.route,
+            startDestination = Destinations.And.route,
             modifier = Modifier.padding(paddingValues)
         )
         {
-            composable(route = DestinationScreens.And.route) {
+            composable(route = Destinations.And.route) {
                 ComparisonScreen(BitwiseOperation.AND, firstAnd, secondAnd) {newFirst, newSecond ->
                     firstAnd = newFirst
                     secondAnd = newSecond
                }
             }
-            composable(route = DestinationScreens.Or.route) {
+            composable(route = Destinations.Or.route) {
                 ComparisonScreen(BitwiseOperation.OR, firstOr, secondOr) {newFirst, newSecond ->
                     firstOr = newFirst
                     secondOr = newSecond
                 }
             }
-            composable(route = DestinationScreens.Xor.route) {
+            composable(route = Destinations.Xor.route) {
                 ComparisonScreen(BitwiseOperation.XOR, firstXor, secondXor) {newFirst, newSecond ->
                     firstXor = newFirst
                     secondXor = newSecond
                 }
             }
-            composable(route = DestinationScreens.Complement.route) {}
-            composable(route = DestinationScreens.Shift.route) {}
+            composable(route = Destinations.Complement.route) {}
+            composable(route = Destinations.Shift.route) {}
         }
     }
 }

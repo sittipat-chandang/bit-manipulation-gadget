@@ -70,13 +70,3 @@ fun padBinary16Divisible(binaryString: String): String {
 fun padBinary64(binaryString: String): String {
     return "0".repeat(64 - binaryString.length) + binaryString
 }
-
-@Composable
-fun DebugHighlightParent() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .border(width = 12.dp, color = Color.Red) // Adjust width and color as needed
-            .background(Color.Transparent) // Optional: Set background color
-    )
-}

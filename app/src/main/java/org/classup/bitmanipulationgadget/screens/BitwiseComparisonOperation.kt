@@ -1,4 +1,4 @@
-package org.classup.bitmanipulationgadget
+package org.classup.bitmanipulationgadget.screens
 
 enum class BitwiseComparisonOperation {
     AND,

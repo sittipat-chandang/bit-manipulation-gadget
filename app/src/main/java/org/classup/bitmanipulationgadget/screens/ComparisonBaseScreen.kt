@@ -25,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.classup.bitmanipulationgadget.BitwiseComparisonOperation
 import org.classup.bitmanipulationgadget.INVALID_TEXT
 import org.classup.bitmanipulationgadget.bmgStringIsValid
 import org.classup.bitmanipulationgadget.inputTo64Binary

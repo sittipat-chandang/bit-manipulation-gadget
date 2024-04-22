@@ -32,6 +32,7 @@ import org.classup.bitmanipulationgadget.navigation.Destinations
 import org.classup.bitmanipulationgadget.navigation.NavItemInfo
 import org.classup.bitmanipulationgadget.screens.ComparisonScreen
 import org.classup.bitmanipulationgadget.screens.ComplementScreen
+import org.classup.bitmanipulationgadget.screens.ShiftScreen
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BitManipulationGadgetTheme
@@ -64,6 +65,7 @@ fun NavBar() {
     var firstOr by remember { mutableStateOf("") }; var secondOr by remember { mutableStateOf("") }
     var firstXor by remember { mutableStateOf("") }; var secondXor by remember { mutableStateOf("") }
     var complementInput by remember { mutableStateOf("") }
+    var shiftInput by remember { mutableStateOf("") }; var shiftCount by remember { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
@@ -122,7 +124,12 @@ fun NavBar() {
                     complementInput = newInput
                 }
             }
-            composable(route = Destinations.Shift.route) {}
+            composable(route = Destinations.Shift.route) {
+                ShiftScreen(shiftInput, shiftCount) { newInput, newShiftCount ->
+                    shiftInput = newInput
+                    shiftCount = newShiftCount
+                }
+            }
         }
     }
 }

@@ -120,7 +120,7 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
             OutlinedTextField(
                 value = first,
                 textStyle = textFieldTextStyle,
-                onValueChange = {rememberInputs(it, second)},
+                onValueChange = { rememberInputs(it, second) },
                 label = { Text("First input", fontSize = 16.sp, color = BMGTextUnfocused) },
                 colors = textFieldColors,
                 singleLine = true,
@@ -135,7 +135,7 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
             OutlinedTextField(
                 value = second,
                 textStyle = textFieldTextStyle,
-                onValueChange = {rememberInputs(first, it)},
+                onValueChange = { rememberInputs(first, it) },
                 label = { Text("Second input", fontSize = 16.sp, color = BMGTextUnfocused) },
                 colors = textFieldColors,
                 singleLine = true,

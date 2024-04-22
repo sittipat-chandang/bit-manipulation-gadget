@@ -47,23 +47,6 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
     val secondBinary = inputTo64Binary(second)
     val result = bitwiseCompare(operation, firstBinary, secondBinary)
 
-//    if (bmgStringIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgStringIsValid(secondBinary))) {
-//        firstBinary = padBinary16Divisible(firstBinary)
-//
-//        if (bmgStringIsValid(secondBinary)) {
-//            secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
-//            result = "0".repeat(firstBinary.length - result.length) + result
-//        }
-//    }
-//    else if (bmgStringIsValid(secondBinary)) {
-//        secondBinary = padBinary16Divisible(secondBinary)
-//
-//        if (bmgStringIsValid(firstBinary)) {
-//            firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
-//            result = "0".repeat(secondBinary.length - result.length) + result
-//        }
-//    }
-
     Column(
         Modifier
         .fillMaxWidth()

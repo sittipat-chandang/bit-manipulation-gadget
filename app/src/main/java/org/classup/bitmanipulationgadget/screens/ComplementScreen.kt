@@ -11,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,6 +35,9 @@ import org.classup.bitmanipulationgadget.layouts.ResultLayout
 import org.classup.bitmanipulationgadget.padBinary64
 import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
+import org.classup.bitmanipulationgadget.ui.theme.BMGText
+import org.classup.bitmanipulationgadget.ui.theme.BMGTextBrighter
+import org.classup.bitmanipulationgadget.ui.theme.BMGTextUnfocused
 import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 @Composable
@@ -57,9 +62,11 @@ fun ComplementScreen(input: String, rememberInput: (String) -> Unit) {
 
 @Composable
 private fun InputCard(input: String, rememberInput: (String) -> Unit) {
-    val textFieldColors = TextFieldDefaults.colors(
+    val textFieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = Color.Transparent,
-        focusedContainerColor = Color.Transparent
+        focusedContainerColor = Color.Transparent,
+        unfocusedBorderColor = BMGText,
+        focusedBorderColor = BMGTextBrighter
     )
     val textFieldTextStyle = TextStyle(fontSize = 24.sp, fontFamily = kufam, color = Color.Black, textAlign = TextAlign.Center)
 
@@ -71,19 +78,18 @@ private fun InputCard(input: String, rememberInput: (String) -> Unit) {
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
-        Column (horizontalAlignment = Alignment.CenterHorizontally) {
+        Column (horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "COMPLEMENT",
                 fontSize = 26.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
-            TextField(
+            OutlinedTextField(
                 value = input,
                 textStyle = textFieldTextStyle,
                 onValueChange = { rememberInput(it) },
+                label = { Text("Input", fontSize = 16.sp, color = BMGTextUnfocused) },
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)

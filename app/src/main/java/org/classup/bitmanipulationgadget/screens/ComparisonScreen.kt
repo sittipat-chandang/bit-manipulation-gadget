@@ -3,6 +3,7 @@ package org.classup.bitmanipulationgadget.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -11,6 +12,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -35,6 +39,9 @@ import org.classup.bitmanipulationgadget.layouts.ResultLayout
 import org.classup.bitmanipulationgadget.padBinary16Divisible
 import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
+import org.classup.bitmanipulationgadget.ui.theme.BMGText
+import org.classup.bitmanipulationgadget.ui.theme.BMGTextBrighter
+import org.classup.bitmanipulationgadget.ui.theme.BMGTextUnfocused
 import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
@@ -49,8 +56,8 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
 
     Column(
         Modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     )
     {
         InputCard(operation, first, second) {newFirst, newSecond ->
@@ -92,11 +99,13 @@ private fun bitwiseCompare(operation: BitwiseComparisonOperation, firstBinary: S
 
 @Composable
 private fun InputCard(operation: BitwiseComparisonOperation, first: String, second:String, rememberInputs: (String, String) -> Unit) {
-    val textFieldColors = TextFieldDefaults.colors(
+    val textFieldColors = OutlinedTextFieldDefaults.colors(
         unfocusedContainerColor = Color.Transparent,
-        focusedContainerColor = Color.Transparent
+        focusedContainerColor = Color.Transparent,
+        unfocusedBorderColor = BMGText,
+        focusedBorderColor = BMGTextBrighter
     )
-    val textFieldTextStyle = TextStyle(fontSize = 24.sp, fontFamily = kufam, color = Color.Black)
+    val textFieldTextStyle = TextStyle(fontSize = 24.sp, fontFamily = kufam, color = Color.Black, textAlign = TextAlign.Center)
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -106,38 +115,31 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
-        Row(verticalAlignment = Alignment.CenterVertically)
+        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth())
         {
-            TextField(
+            OutlinedTextField(
                 value = first,
                 textStyle = textFieldTextStyle,
                 onValueChange = {rememberInputs(it, second)},
+                label = { Text("First input", fontSize = 16.sp, color = BMGTextUnfocused) },
                 colors = textFieldColors,
                 singleLine = true,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(start = 12.dp, bottom = 12.dp, top = 12.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 3.dp)
             )
             Text(
                 text = operation.name,
                 fontSize = 26.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(top = 5.dp)
+                modifier = Modifier.padding(top = 10.dp)
             )
-            TextField(
+            OutlinedTextField(
                 value = second,
                 textStyle = textFieldTextStyle,
                 onValueChange = {rememberInputs(first, it)},
+                label = { Text("Second input", fontSize = 16.sp, color = BMGTextUnfocused) },
                 colors = textFieldColors,
                 singleLine = true,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(end = 12.dp, bottom = 12.dp, top = 12.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
             )
         }
     }
@@ -146,8 +148,7 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String, result: String) {
-    val pages = (firstBinary.length / 16).coerceAtLeast(1)  // Doesn't really matter which one you use since they are all pre-padded.
-    val pagerState = rememberPagerState(pageCount = { pages })
+    var pages = 1
 
     var firstBinaryPadded = firstBinary
     var secondBinaryPadded = secondBinary
@@ -160,6 +161,8 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
             secondBinaryPadded = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
             resultPadded = "0".repeat(firstBinary.length - result.length) + result
         }
+
+        pages = firstBinaryPadded.length / 16
     }
     else if (bmgStringIsValid(secondBinary)) {
         secondBinaryPadded = padBinary16Divisible(secondBinary)
@@ -168,7 +171,11 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
             firstBinaryPadded = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
             resultPadded = "0".repeat(secondBinary.length - result.length) + result
         }
+
+        pages = secondBinaryPadded.length / 16
     }
+
+    val pagerState = rememberPagerState(pageCount = { pages })
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),

@@ -60,12 +60,9 @@ fun NavBar() {
         mutableIntStateOf(0)
     }
 
-    var firstAnd by remember { mutableStateOf("") }
-    var secondAnd by remember { mutableStateOf("") }
-    var firstOr by remember { mutableStateOf("") }
-    var secondOr by remember { mutableStateOf("") }
-    var firstXor by remember { mutableStateOf("") }
-    var secondXor by remember { mutableStateOf("") }
+    var firstAnd by remember { mutableStateOf("") }; var secondAnd by remember { mutableStateOf("") }
+    var firstOr by remember { mutableStateOf("") }; var secondOr by remember { mutableStateOf("") }
+    var firstXor by remember { mutableStateOf("") }; var secondXor by remember { mutableStateOf("") }
     var complementInput by remember { mutableStateOf("") }
 
     Scaffold(

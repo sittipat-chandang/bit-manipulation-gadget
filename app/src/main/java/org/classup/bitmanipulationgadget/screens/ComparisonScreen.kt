@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.classup.bitmanipulationgadget.BitwiseOperation
+import org.classup.bitmanipulationgadget.BitwiseComparisonOperation
 import org.classup.bitmanipulationgadget.INVALID_TEXT
 import org.classup.bitmanipulationgadget.layouts.ResultLayout
 import org.classup.bitmanipulationgadget.bmgTextIsValid
@@ -40,7 +40,7 @@ import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
-private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, secondBinary: String): String {
+private fun bitwiseCompare(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String): String {
     val operableFirst: ULong
     val operableSecond: ULong
 
@@ -57,13 +57,13 @@ private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, sec
     }
 
     return when (operation) {
-        BitwiseOperation.AND -> {
+        BitwiseComparisonOperation.AND -> {
             (operableFirst and operableSecond).toString(2)
         }
-        BitwiseOperation.OR -> {
+        BitwiseComparisonOperation.OR -> {
             (operableFirst or operableSecond).toString(2)
         }
-        BitwiseOperation.XOR -> {
+        BitwiseComparisonOperation.XOR -> {
             (operableFirst xor operableSecond).toString(2)
         }
         else -> {
@@ -73,7 +73,7 @@ private fun bitwiseCompare(operation: BitwiseOperation, firstBinary: String, sec
 }
 
 @Composable
-fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String, updateInputs: (String, String) -> Unit)
+fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, second: String, rememberInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
     var firstBinary = inputTo64Binary(first)
@@ -111,7 +111,7 @@ fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String,
     )
     {
         InputCard(operation, first, second) {newFirst, newSecond ->
-            updateInputs(newFirst, newSecond)
+            rememberInputs(newFirst, newSecond)
         }
         SolutionCard(operation, firstBinary, secondBinary, result, pages)
         ResultLayout(result)
@@ -119,7 +119,7 @@ fun ComparisonScreen(operation: BitwiseOperation, first: String, second: String,
 }
 
 @Composable
-private fun InputCard(operation: BitwiseOperation, first: String, second:String, updateInputs: (String, String) -> Unit) {
+private fun InputCard(operation: BitwiseComparisonOperation, first: String, second:String, rememberInputs: (String, String) -> Unit) {
     val textFieldColors = TextFieldDefaults.colors(
         unfocusedContainerColor = Color.Transparent,
         focusedContainerColor = Color.Transparent
@@ -139,7 +139,7 @@ private fun InputCard(operation: BitwiseOperation, first: String, second:String,
             TextField(
                 value = first,
                 textStyle = textFieldTextStyle,
-                onValueChange = {updateInputs(it, second)},
+                onValueChange = {rememberInputs(it, second)},
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier
@@ -159,7 +159,7 @@ private fun InputCard(operation: BitwiseOperation, first: String, second:String,
             TextField(
                 value = second,
                 textStyle = textFieldTextStyle,
-                onValueChange = {updateInputs(first, it)},
+                onValueChange = {rememberInputs(first, it)},
                 colors = textFieldColors,
                 singleLine = true,
                 modifier = Modifier
@@ -173,7 +173,7 @@ private fun InputCard(operation: BitwiseOperation, first: String, second:String,
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secondBinary: String, result: String, pages: Int) {
+private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String, result: String, pages: Int) {
     val pagerState = rememberPagerState(pageCount = { pages })
 
     ElevatedCard(

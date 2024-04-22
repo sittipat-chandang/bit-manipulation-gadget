@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import org.classup.bitmanipulationgadget.navigation.Destinations
 import org.classup.bitmanipulationgadget.navigation.NavItemInfo
 import org.classup.bitmanipulationgadget.screens.ComparisonScreen
+import org.classup.bitmanipulationgadget.screens.ComplementScreen
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BitManipulationGadgetTheme
@@ -59,12 +60,13 @@ fun NavBar() {
         mutableIntStateOf(0)
     }
 
-    var firstAnd by remember {mutableStateOf("")}
-    var secondAnd by remember {mutableStateOf("")}
-    var firstOr by remember {mutableStateOf("")}
-    var secondOr by remember {mutableStateOf("")}
-    var firstXor by remember {mutableStateOf("")}
-    var secondXor by remember {mutableStateOf("")}
+    var firstAnd by remember { mutableStateOf("") }
+    var secondAnd by remember { mutableStateOf("") }
+    var firstOr by remember { mutableStateOf("") }
+    var secondOr by remember { mutableStateOf("") }
+    var firstXor by remember { mutableStateOf("") }
+    var secondXor by remember { mutableStateOf("") }
+    var complementInput by remember { mutableStateOf("") }
 
     Scaffold(
         bottomBar = {
@@ -101,24 +103,28 @@ fun NavBar() {
         )
         {
             composable(route = Destinations.And.route) {
-                ComparisonScreen(BitwiseOperation.AND, firstAnd, secondAnd) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseComparisonOperation.AND, firstAnd, secondAnd) { newFirst, newSecond ->
                     firstAnd = newFirst
                     secondAnd = newSecond
                }
             }
             composable(route = Destinations.Or.route) {
-                ComparisonScreen(BitwiseOperation.OR, firstOr, secondOr) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseComparisonOperation.OR, firstOr, secondOr) { newFirst, newSecond ->
                     firstOr = newFirst
                     secondOr = newSecond
                 }
             }
             composable(route = Destinations.Xor.route) {
-                ComparisonScreen(BitwiseOperation.XOR, firstXor, secondXor) {newFirst, newSecond ->
+                ComparisonScreen(BitwiseComparisonOperation.XOR, firstXor, secondXor) { newFirst, newSecond ->
                     firstXor = newFirst
                     secondXor = newSecond
                 }
             }
-            composable(route = Destinations.Complement.route) {}
+            composable(route = Destinations.Complement.route) {
+                ComplementScreen(complementInput) { newInput ->
+                    complementInput = newInput
+                }
+            }
             composable(route = Destinations.Shift.route) {}
         }
     }

@@ -1,7 +1,6 @@
 package org.classup.bitmanipulationgadget.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,10 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.BitwiseComparisonOperation
 import org.classup.bitmanipulationgadget.INVALID_TEXT
-import org.classup.bitmanipulationgadget.layouts.ResultLayout
 import org.classup.bitmanipulationgadget.bmgTextIsValid
 import org.classup.bitmanipulationgadget.inputTo64Binary
 import org.classup.bitmanipulationgadget.layouts.PageIndicatorLayout
+import org.classup.bitmanipulationgadget.layouts.ResultLayout
 import org.classup.bitmanipulationgadget.padBinary16Divisible
 import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
@@ -111,9 +110,6 @@ private fun bitwiseCompare(operation: BitwiseComparisonOperation, firstBinary: S
         BitwiseComparisonOperation.XOR -> {
             (operableFirst xor operableSecond).toString(2)
         }
-        else -> {
-            INVALID_TEXT
-        }
     }
 }
 
@@ -184,21 +180,18 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
     )
     {
         HorizontalPager(state = pagerState) {page ->
-            val formattedResult: AnnotatedString
-
-            if (bmgTextIsValid(result)) {
+            val formattedResult: AnnotatedString = if (bmgTextIsValid(result)) {
                 val splittedResult = spaceEvery4th(result.substring(16 * page, 16 * (page + 1)))
 
-                formattedResult = buildAnnotatedString {
+                buildAnnotatedString {
                     for (i in splittedResult.indices) {
                         withStyle(style = SpanStyle(color = if (splittedResult[i] == '1') Color.Green else Color.Red)) {
                             append(splittedResult[i])
                         }
                     }
                 }
-            }
-            else {
-                formattedResult = buildAnnotatedString { append("RESULT") }
+            } else {
+                buildAnnotatedString { append("RESULT") }
             }
 
             Column {

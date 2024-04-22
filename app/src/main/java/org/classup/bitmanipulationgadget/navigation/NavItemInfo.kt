@@ -1,12 +1,13 @@
-package org.classup.bitmanipulationgadget;
+package org.classup.bitmanipulationgadget.navigation
 
-import androidx.compose.material.icons.Icons;
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector;
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import org.classup.bitmanipulationgadget.R
 
-public class NavItemInfo (val label: String = "", val icon: ImageVector = Icons.Filled.Warning, val route: String = "") {
+class NavItemInfo (val label: String = "", val icon: ImageVector = Icons.Filled.Warning, val route: String = "") {
     @Composable
     fun getAllNavItems(): List<NavItemInfo> {
         return listOf(

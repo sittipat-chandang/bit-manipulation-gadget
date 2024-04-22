@@ -1,4 +1,4 @@
-package org.classup.bitmanipulationgadget
+package org.classup.bitmanipulationgadget.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +27,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.classup.bitmanipulationgadget.BitwiseOperation
+import org.classup.bitmanipulationgadget.INVALID_TEXT
+import org.classup.bitmanipulationgadget.layouts.ResultLayout
+import org.classup.bitmanipulationgadget.bmgTextIsValid
+import org.classup.bitmanipulationgadget.inputTo64Binary
+import org.classup.bitmanipulationgadget.layouts.PageIndicatorLayout
+import org.classup.bitmanipulationgadget.padBinary16Divisible
+import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
-import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
@@ -222,6 +229,6 @@ private fun SolutionCard(operation: BitwiseOperation, firstBinary: String, secon
             }
         }
 
-        PageIndicator(pages, pagerState)
+        PageIndicatorLayout(pages, pagerState)
     }
 }

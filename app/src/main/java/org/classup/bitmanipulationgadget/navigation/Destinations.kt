@@ -1,4 +1,4 @@
-package org.classup.bitmanipulationgadget
+package org.classup.bitmanipulationgadget.navigation
 
 sealed class Destinations(val route: String) {
     data object And: Destinations("and")

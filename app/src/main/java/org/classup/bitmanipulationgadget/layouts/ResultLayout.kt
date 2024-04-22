@@ -1,35 +1,33 @@
-package org.classup.bitmanipulationgadget
+package org.classup.bitmanipulationgadget.layouts
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.classup.bitmanipulationgadget.bmgTextIsValid
+import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
-import org.classup.bitmanipulationgadget.ui.theme.BMGPageIndicator
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
 import org.classup.bitmanipulationgadget.ui.theme.BMGTextBrighter
 import kotlin.math.ceil
+
+@Composable
+fun ResultLayout(result: String) {
+    BinaryResult(result)
+    DecimalResult(result)
+    HexResult(result)
+}
 
 @Composable
 private fun BinaryResult(result: String) {
@@ -38,7 +36,7 @@ private fun BinaryResult(result: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(10.dp),
+            .padding(11.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -84,7 +82,7 @@ private fun DecimalResult(result: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(10.dp),
+            .padding(11.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -115,7 +113,7 @@ private fun HexResult(result: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(9.dp),
+            .padding(11.dp),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -124,42 +122,7 @@ private fun HexResult(result: String) {
                 text = hexResult,
                 fontSize = 26.sp,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 9.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun ResultLayout(result: String) {
-    BinaryResult(result)
-    DecimalResult(result)
-    HexResult(result)
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun PageIndicator (pages: Int, pagerState: PagerState) {
-    if (pages < 2) { return }
-
-    Row(
-        Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(bottom = 18.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Bottom
-    )
-    {
-        repeat(pagerState.pageCount) { iteration ->
-            val color =
-                if (pagerState.currentPage == iteration) BMGText else BMGPageIndicator
-            Box(
-                modifier = Modifier
-                    .padding(2.dp)
-                    .clip(CircleShape)
-                    .background(color)
-                    .size(10.dp)
+                modifier = Modifier.padding(top = 10.dp)
             )
         }
     }

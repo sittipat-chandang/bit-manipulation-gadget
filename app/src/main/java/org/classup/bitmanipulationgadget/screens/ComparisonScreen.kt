@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.classup.bitmanipulationgadget.BitwiseComparisonOperation
 import org.classup.bitmanipulationgadget.INVALID_TEXT
-import org.classup.bitmanipulationgadget.bmgTextIsValid
+import org.classup.bitmanipulationgadget.bmgStringIsValid
 import org.classup.bitmanipulationgadget.inputTo64Binary
 import org.classup.bitmanipulationgadget.layouts.PageIndicatorLayout
 import org.classup.bitmanipulationgadget.layouts.ResultLayout
@@ -47,27 +47,21 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
     var secondBinary = inputTo64Binary(second)
     var result = bitwiseCompare(operation, firstBinary, secondBinary)
 
-    var pages = 1
-
-    if (bmgTextIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgTextIsValid(secondBinary))) {
+    if (bmgStringIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgStringIsValid(secondBinary))) {
         firstBinary = padBinary16Divisible(firstBinary)
 
-        if (bmgTextIsValid(secondBinary)) {
+        if (bmgStringIsValid(secondBinary)) {
             secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
             result = "0".repeat(firstBinary.length - result.length) + result
         }
-
-        pages = firstBinary.length / 16
     }
-    else if (bmgTextIsValid(secondBinary)) {
+    else if (bmgStringIsValid(secondBinary)) {
         secondBinary = padBinary16Divisible(secondBinary)
 
-        if (bmgTextIsValid(firstBinary)) {
+        if (bmgStringIsValid(firstBinary)) {
             firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
             result = "0".repeat(secondBinary.length - result.length) + result
         }
-
-        pages = secondBinary.length / 16
     }
 
     Column(
@@ -79,7 +73,7 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
         InputCard(operation, first, second) {newFirst, newSecond ->
             rememberInputs(newFirst, newSecond)
         }
-        SolutionCard(operation, firstBinary, secondBinary, result, pages)
+        SolutionCard(operation, firstBinary, secondBinary, result)
         ResultLayout(result)
     }
 }
@@ -168,7 +162,8 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String, result: String, pages: Int) {
+private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String, result: String) {
+    val pages = (firstBinary.length / 16).coerceAtLeast(1)
     val pagerState = rememberPagerState(pageCount = { pages })
 
     ElevatedCard(
@@ -180,7 +175,7 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
     )
     {
         HorizontalPager(state = pagerState) {page ->
-            val formattedResult: AnnotatedString = if (bmgTextIsValid(result)) {
+            val formattedResult: AnnotatedString = if (bmgStringIsValid(result)) {
                 val splittedResult = spaceEvery4th(result.substring(16 * page, 16 * (page + 1)))
 
                 buildAnnotatedString {
@@ -196,7 +191,7 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
 
             Column {
                 Text(
-                    text = if (bmgTextIsValid(firstBinary)) spaceEvery4th(firstBinary.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
+                    text = if (bmgStringIsValid(firstBinary)) spaceEvery4th(firstBinary.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
@@ -206,7 +201,7 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
                 )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Text(
-                    text = if (bmgTextIsValid(secondBinary)) spaceEvery4th(secondBinary.substring(16 * page, 16 * (page + 1))) else "SECOND INPUT",
+                    text = if (bmgStringIsValid(secondBinary)) spaceEvery4th(secondBinary.substring(16 * page, 16 * (page + 1))) else "SECOND INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,

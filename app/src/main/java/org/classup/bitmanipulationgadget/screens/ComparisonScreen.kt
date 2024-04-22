@@ -40,38 +40,6 @@ import org.classup.bitmanipulationgadget.ui.theme.kufam
 
 // I don't know what I'm doing. Probably a lot of weird/hacky code.
 
-private fun bitwiseCompare(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String): String {
-    val operableFirst: ULong
-    val operableSecond: ULong
-
-    try {
-        /* Can't use Long here because the parser doesn't treat the first bit as a sign bit.
-           This means that 1111111111111111111111111111111111111111111111111111111111111111
-           will be equal to 01111111111111111111111111111111111111111111111111111111111111111,
-           which adds up to 65 bits.
-        */
-        operableFirst = firstBinary.toULong(2)
-        operableSecond = secondBinary.toULong(2)
-    } catch (e: Exception) {
-        return INVALID_TEXT
-    }
-
-    return when (operation) {
-        BitwiseComparisonOperation.AND -> {
-            (operableFirst and operableSecond).toString(2)
-        }
-        BitwiseComparisonOperation.OR -> {
-            (operableFirst or operableSecond).toString(2)
-        }
-        BitwiseComparisonOperation.XOR -> {
-            (operableFirst xor operableSecond).toString(2)
-        }
-        else -> {
-            INVALID_TEXT
-        }
-    }
-}
-
 @Composable
 fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, second: String, rememberInputs: (String, String) -> Unit)
 {
@@ -104,8 +72,7 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
     }
 
     Column(
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
+        Modifier
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
     )
@@ -115,6 +82,38 @@ fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, secon
         }
         SolutionCard(operation, firstBinary, secondBinary, result, pages)
         ResultLayout(result)
+    }
+}
+
+private fun bitwiseCompare(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String): String {
+    val operableFirst: ULong
+    val operableSecond: ULong
+
+    try {
+        /* Can't use Long here because the parser doesn't treat the first bit as a sign bit.
+           This means that 1111111111111111111111111111111111111111111111111111111111111111
+           will be equal to 01111111111111111111111111111111111111111111111111111111111111111,
+           which adds up to 65 bits.
+        */
+        operableFirst = firstBinary.toULong(2)
+        operableSecond = secondBinary.toULong(2)
+    } catch (e: Exception) {
+        return INVALID_TEXT
+    }
+
+    return when (operation) {
+        BitwiseComparisonOperation.AND -> {
+            (operableFirst and operableSecond).toString(2)
+        }
+        BitwiseComparisonOperation.OR -> {
+            (operableFirst or operableSecond).toString(2)
+        }
+        BitwiseComparisonOperation.XOR -> {
+            (operableFirst xor operableSecond).toString(2)
+        }
+        else -> {
+            INVALID_TEXT
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 package org.classup.bitmanipulationgadget.screens
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,7 @@ import org.classup.bitmanipulationgadget.bmgStringIsValid
 import org.classup.bitmanipulationgadget.inputTo64Binary
 import org.classup.bitmanipulationgadget.layouts.PageIndicatorLayout
 import org.classup.bitmanipulationgadget.layouts.ResultLayout
-import org.classup.bitmanipulationgadget.padBinary16Divisible
+import org.classup.bitmanipulationgadget.padBinary64
 import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.kufam
@@ -94,10 +95,10 @@ private fun InputCard(input: String, rememberInput: (String) -> Unit) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SolutionCard(inputBinary: String, result: String) {
-    val inputBinaryPadded = padBinary16Divisible(inputBinary)
-    val resultPadded = padBinary16Divisible(result)
+    val inputBinaryPadded = if (bmgStringIsValid(inputBinary)) padBinary64(inputBinary) else inputBinary
+    val resultPadded = if (bmgStringIsValid(result)) padBinary64(result) else result
 
-    val pages = (inputBinaryPadded.length / 16).coerceAtLeast(1)  // Doesn't really matter which one you use since they are all pre-padded.
+    val pages = (resultPadded.length / 16).coerceAtLeast(1)  // Doesn't really matter which one you use since they are all pre-padded.
     val pagerState = rememberPagerState(pageCount = { pages })
 
     ElevatedCard(
@@ -110,12 +111,12 @@ private fun SolutionCard(inputBinary: String, result: String) {
     {
         HorizontalPager(state = pagerState) { page ->
             val formattedResult: AnnotatedString = if (bmgStringIsValid(resultPadded)) {
-                val splittedResult = spaceEvery4th(resultPadded.substring(16 * page, 16 * (page + 1)))
+                val spacedResult = spaceEvery4th(resultPadded.substring(16 * page, 16 * (page + 1)))
 
                 buildAnnotatedString {
-                    for (i in splittedResult.indices) {
-                        withStyle(style = SpanStyle(color = if (splittedResult[i] == '1') Color.Green else Color.Red)) {
-                            append(splittedResult[i])
+                    for (i in spacedResult.indices) {
+                        withStyle(style = SpanStyle(color = if (spacedResult[i] == '1') Color.Green else Color.Red)) {
+                            append(spacedResult[i])
                         }
                     }
                 }
@@ -136,7 +137,7 @@ private fun SolutionCard(inputBinary: String, result: String) {
                             16 * page,
                             16 * (page + 1)
                         )
-                    ) else "SECOND INPUT",
+                    ) else "INPUT",
                     fontSize = 26.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center,

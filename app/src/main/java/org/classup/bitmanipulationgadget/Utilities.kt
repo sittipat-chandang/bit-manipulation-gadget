@@ -67,6 +67,10 @@ fun padBinary16Divisible(binaryString: String): String {
     return "0".repeat(padding) + binaryString
 }
 
+fun padBinary64(binaryString: String): String {
+    return "0".repeat(64 - binaryString.length) + binaryString
+}
+
 @Composable
 fun DebugHighlightParent() {
     Box(

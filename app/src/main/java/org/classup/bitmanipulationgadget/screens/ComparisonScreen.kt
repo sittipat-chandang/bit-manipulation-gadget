@@ -43,26 +43,26 @@ import org.classup.bitmanipulationgadget.ui.theme.kufam
 fun ComparisonScreen(operation: BitwiseComparisonOperation, first: String, second: String, rememberInputs: (String, String) -> Unit)
 {
     // This screen propagates input updates to MainActivity.
-    var firstBinary = inputTo64Binary(first)
-    var secondBinary = inputTo64Binary(second)
-    var result = bitwiseCompare(operation, firstBinary, secondBinary)
+    val firstBinary = inputTo64Binary(first)
+    val secondBinary = inputTo64Binary(second)
+    val result = bitwiseCompare(operation, firstBinary, secondBinary)
 
-    if (bmgStringIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgStringIsValid(secondBinary))) {
-        firstBinary = padBinary16Divisible(firstBinary)
-
-        if (bmgStringIsValid(secondBinary)) {
-            secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
-            result = "0".repeat(firstBinary.length - result.length) + result
-        }
-    }
-    else if (bmgStringIsValid(secondBinary)) {
-        secondBinary = padBinary16Divisible(secondBinary)
-
-        if (bmgStringIsValid(firstBinary)) {
-            firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
-            result = "0".repeat(secondBinary.length - result.length) + result
-        }
-    }
+//    if (bmgStringIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgStringIsValid(secondBinary))) {
+//        firstBinary = padBinary16Divisible(firstBinary)
+//
+//        if (bmgStringIsValid(secondBinary)) {
+//            secondBinary = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
+//            result = "0".repeat(firstBinary.length - result.length) + result
+//        }
+//    }
+//    else if (bmgStringIsValid(secondBinary)) {
+//        secondBinary = padBinary16Divisible(secondBinary)
+//
+//        if (bmgStringIsValid(firstBinary)) {
+//            firstBinary = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
+//            result = "0".repeat(secondBinary.length - result.length) + result
+//        }
+//    }
 
     Column(
         Modifier
@@ -163,8 +163,29 @@ private fun InputCard(operation: BitwiseComparisonOperation, first: String, seco
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: String, secondBinary: String, result: String) {
-    val pages = (firstBinary.length / 16).coerceAtLeast(1)
+    val pages = (firstBinary.length / 16).coerceAtLeast(1)  // Doesn't really matter which one you use since they are all pre-padded.
     val pagerState = rememberPagerState(pageCount = { pages })
+
+    var firstBinaryPadded = firstBinary
+    var secondBinaryPadded = secondBinary
+    var resultPadded = result
+
+    if (bmgStringIsValid(firstBinary) && (firstBinary.length > secondBinary.length || !bmgStringIsValid(secondBinary))) {
+        firstBinaryPadded = padBinary16Divisible(firstBinary)
+
+        if (bmgStringIsValid(secondBinary)) {
+            secondBinaryPadded = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
+            resultPadded = "0".repeat(firstBinary.length - result.length) + result
+        }
+    }
+    else if (bmgStringIsValid(secondBinary)) {
+        secondBinaryPadded = padBinary16Divisible(secondBinary)
+
+        if (bmgStringIsValid(firstBinary)) {
+            firstBinaryPadded = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
+            resultPadded = "0".repeat(secondBinary.length - result.length) + result
+        }
+    }
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -175,13 +196,13 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
     )
     {
         HorizontalPager(state = pagerState) {page ->
-            val formattedResult: AnnotatedString = if (bmgStringIsValid(result)) {
-                val splittedResult = spaceEvery4th(result.substring(16 * page, 16 * (page + 1)))
+            val formattedResult: AnnotatedString = if (bmgStringIsValid(resultPadded)) {
+                val spacedResult = spaceEvery4th(resultPadded.substring(16 * page, 16 * (page + 1)))
 
                 buildAnnotatedString {
-                    for (i in splittedResult.indices) {
-                        withStyle(style = SpanStyle(color = if (splittedResult[i] == '1') Color.Green else Color.Red)) {
-                            append(splittedResult[i])
+                    for (i in spacedResult.indices) {
+                        withStyle(style = SpanStyle(color = if (spacedResult[i] == '1') Color.Green else Color.Red)) {
+                            append(spacedResult[i])
                         }
                     }
                 }
@@ -191,7 +212,7 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
 
             Column {
                 Text(
-                    text = if (bmgStringIsValid(firstBinary)) spaceEvery4th(firstBinary.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
+                    text = if (bmgStringIsValid(firstBinaryPadded)) spaceEvery4th(firstBinaryPadded.substring(16 * page, 16 * (page + 1))) else "FIRST INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,
@@ -201,7 +222,7 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
                 )
                 Text(text = operation.name, fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
                 Text(
-                    text = if (bmgStringIsValid(secondBinary)) spaceEvery4th(secondBinary.substring(16 * page, 16 * (page + 1))) else "SECOND INPUT",
+                    text = if (bmgStringIsValid(secondBinaryPadded)) spaceEvery4th(secondBinaryPadded.substring(16 * page, 16 * (page + 1))) else "SECOND INPUT",
                     fontSize = 26.sp,
                     color= Color.Black,
                     textAlign = TextAlign.Center,

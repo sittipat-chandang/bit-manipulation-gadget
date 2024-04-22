@@ -15,7 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.classup.bitmanipulationgadget.bmgTextIsValid
+import org.classup.bitmanipulationgadget.bmgStringIsValid
+import org.classup.bitmanipulationgadget.padBinary16Divisible
 import org.classup.bitmanipulationgadget.spaceEvery4th
 import org.classup.bitmanipulationgadget.ui.theme.BMGOrangeBrighter
 import org.classup.bitmanipulationgadget.ui.theme.BMGText
@@ -23,14 +24,16 @@ import org.classup.bitmanipulationgadget.ui.theme.BMGTextBrighter
 import kotlin.math.ceil
 
 @Composable
-fun ResultLayout(result: String) {
-    BinaryResult(result)
-    DecimalResult(result)
-    HexResult(result)
+fun ResultLayout(resultBinary: String) {
+    BinaryResult(resultBinary)
+    DecimalResult(resultBinary)
+    HexResult(resultBinary)
 }
 
 @Composable
 private fun BinaryResult(result: String) {
+    val resultPadded = padBinary16Divisible(result)
+
     val padBits = "0000 0000 0000 0000"
 
     ElevatedCard(
@@ -41,7 +44,7 @@ private fun BinaryResult(result: String) {
     )
     {
         val coloredResult = buildAnnotatedString {
-            val rowCount = if (bmgTextIsValid(result)) ceil((result.length / 16).toDouble()).toInt() else 0
+            val rowCount = if (bmgStringIsValid(result)) ceil((resultPadded.length / 16).toDouble()).toInt() else 0
 
             if (rowCount < 1) {
                 withStyle(style = SpanStyle(color = BMGText)) {
@@ -61,7 +64,7 @@ private fun BinaryResult(result: String) {
                     withStyle(style = SpanStyle(color = BMGTextBrighter)) {
                         append(
                             spaceEvery4th(
-                                result.substring(
+                                resultPadded.substring(
                                     i * 16,
                                     i * 16 + 16
                                 )
@@ -84,7 +87,7 @@ private fun BinaryResult(result: String) {
 
 @Composable
 private fun DecimalResult(result: String) {
-    val decimalResult: String = if (bmgTextIsValid(result)) {
+    val decimalResult: String = if (bmgStringIsValid(result)) {
         result.toULong(2).toLong().toString()
     }
     else {
@@ -113,7 +116,7 @@ private fun DecimalResult(result: String) {
 private fun HexResult(result: String) {
     var hexResult: String
 
-    hexResult = if (bmgTextIsValid(result)) {
+    hexResult = if (bmgStringIsValid(result)) {
         "0x" + result.toULong(2).toString(16)
     }
     else {

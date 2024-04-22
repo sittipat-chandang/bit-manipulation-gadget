@@ -54,7 +54,7 @@ fun inputTo64Binary(input: String): String {
     return result
 }
 
-fun bmgTextIsValid(bmgText: String): Boolean {
+fun bmgStringIsValid(bmgText: String): Boolean {
     return bmgText != INVALID_TEXT
 }
 

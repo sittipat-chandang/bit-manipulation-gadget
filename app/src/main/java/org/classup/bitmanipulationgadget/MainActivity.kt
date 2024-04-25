@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import org.classup.bitmanipulationgadget.navigation.Destinations
 import org.classup.bitmanipulationgadget.navigation.NavItemInfo
 import org.classup.bitmanipulationgadget.screens.BitwiseComparisonOperation
+import org.classup.bitmanipulationgadget.screens.BitwiseShiftType
 import org.classup.bitmanipulationgadget.screens.ComparisonScreen
 import org.classup.bitmanipulationgadget.screens.ComplementScreen
 import org.classup.bitmanipulationgadget.screens.ShiftScreen
@@ -66,7 +67,10 @@ fun NavBar() {
     var firstOr by remember { mutableStateOf("") }; var secondOr by remember { mutableStateOf("") }
     var firstXor by remember { mutableStateOf("") }; var secondXor by remember { mutableStateOf("") }
     var complementInput by remember { mutableStateOf("") }
-    var shiftInput by remember { mutableStateOf("") }; var shiftCount by remember { mutableIntStateOf(0) }
+
+    var shiftType by remember { mutableStateOf(BitwiseShiftType.LEFT) }
+    var shiftInput by remember { mutableStateOf("") }
+    var shiftCount by remember { mutableStateOf("") }  // Let's parse this at ShiftScreen instead of using integer.
 
     Scaffold(
         bottomBar = {

@@ -168,7 +168,6 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
         }
 
         pages = secondBinaryPadded.length / 16
-        Log.d("Fart", "$firstBinary | $secondBinaryPadded | $resultPadded")
     }
 
     val pagerState = rememberPagerState(pageCount = { pages })

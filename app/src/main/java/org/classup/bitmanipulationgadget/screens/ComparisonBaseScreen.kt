@@ -1,5 +1,6 @@
 package org.classup.bitmanipulationgadget.screens
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -152,8 +153,8 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
         firstBinaryPadded = padBinary16Divisible(firstBinary)
 
         if (bmgStringIsValid(secondBinary)) {
-            secondBinaryPadded = "0".repeat(firstBinary.length - secondBinary.length) + secondBinary
-            resultPadded = "0".repeat(firstBinary.length - result.length) + result
+            secondBinaryPadded = "0".repeat(firstBinaryPadded.length - secondBinary.length) + secondBinary
+            resultPadded = "0".repeat(firstBinaryPadded.length - result.length) + result
         }
 
         pages = firstBinaryPadded.length / 16
@@ -162,11 +163,12 @@ private fun SolutionCard(operation: BitwiseComparisonOperation, firstBinary: Str
         secondBinaryPadded = padBinary16Divisible(secondBinary)
 
         if (bmgStringIsValid(firstBinary)) {
-            firstBinaryPadded = "0".repeat(secondBinary.length - firstBinary.length) + firstBinary
-            resultPadded = "0".repeat(secondBinary.length - result.length) + result
+            firstBinaryPadded = "0".repeat(secondBinaryPadded.length - firstBinary.length) + firstBinary
+            resultPadded = "0".repeat(secondBinaryPadded.length - result.length) + result
         }
 
         pages = secondBinaryPadded.length / 16
+        Log.d("Fart", "$firstBinary | $secondBinaryPadded | $resultPadded")
     }
 
     val pagerState = rememberPagerState(pageCount = { pages })

@@ -1,20 +1,29 @@
 package org.classup.bitmanipulationgadget.layouts
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.classup.bitmanipulationgadget.R
 import org.classup.bitmanipulationgadget.bmgStringIsValid
 import org.classup.bitmanipulationgadget.padBinary16Divisible
 import org.classup.bitmanipulationgadget.spaceEvery4th
@@ -36,10 +45,21 @@ private fun BinaryResult(result: String) {
 
     val padBits = "0000 0000 0000 0000"
 
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(11.dp),
+            .padding(11.dp)
+            .clickable(onClick = {
+                if (bmgStringIsValid(result)) {
+                    clipboardManager.setText(AnnotatedString("0b$result"))
+                    Toast
+                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
@@ -75,6 +95,12 @@ private fun BinaryResult(result: String) {
             }
         }
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Icon(
+                imageVector =  ImageVector.vectorResource(R.drawable.clipboard),
+                contentDescription = "",
+                tint = BMGText,
+                modifier = Modifier.align(Alignment.TopEnd).padding(5.dp)
+            )
             Text(
                 text = coloredResult,
                 fontSize = 26.sp,
@@ -94,14 +120,31 @@ private fun DecimalResult(result: String) {
         "DECIMAL RESULT"
     }
 
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(11.dp),
+            .padding(11.dp)
+            .clickable(onClick = {
+                if (bmgStringIsValid(result)) {
+                    clipboardManager.setText(AnnotatedString(decimalResult))
+                    Toast
+                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Icon(
+                imageVector =  ImageVector.vectorResource(R.drawable.clipboard),
+                contentDescription = "",
+                tint = BMGText,
+                modifier = Modifier.align(Alignment.TopEnd).padding(5.dp)
+            )
             Text(
                 text = decimalResult,
                 fontSize = 26.sp,
@@ -125,14 +168,31 @@ private fun HexResult(result: String) {
 
     if (hexResult == "0x") hexResult = "0x0"  // Lol
 
+    val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
-            .padding(11.dp),
+            .padding(11.dp)
+            .clickable(onClick = {
+                if (bmgStringIsValid(result)) {
+                    clipboardManager.setText(AnnotatedString(hexResult))
+                    Toast
+                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }),
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Icon(
+                imageVector =  ImageVector.vectorResource(R.drawable.clipboard),
+                contentDescription = "",
+                tint = BMGText,
+                modifier = Modifier.align(Alignment.TopEnd).padding(5.dp)
+            )
             Text(
                 text = hexResult,
                 fontSize = 26.sp,

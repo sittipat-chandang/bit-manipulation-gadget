@@ -68,7 +68,6 @@ fun NavBar() {
     var firstXor by remember { mutableStateOf("") }; var secondXor by remember { mutableStateOf("") }
     var complementInput by remember { mutableStateOf("") }
 
-    var shiftType by remember { mutableStateOf(BitwiseShiftType.LEFT) }
     var shiftInput by remember { mutableStateOf("") }
     var shiftCount by remember { mutableStateOf("") }  // Let's parse this at ShiftScreen instead of using integer.
 

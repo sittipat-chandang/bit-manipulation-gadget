@@ -56,7 +56,7 @@ private fun BinaryResult(result: String) {
                 if (bmgStringIsValid(result)) {
                     clipboardManager.setText(AnnotatedString("0b$result"))
                     Toast
-                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .makeText(context, "Copied the answer to clipboard!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }),
@@ -131,7 +131,7 @@ private fun DecimalResult(result: String) {
                 if (bmgStringIsValid(result)) {
                     clipboardManager.setText(AnnotatedString(decimalResult))
                     Toast
-                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .makeText(context, "Copied the answer to clipboard!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }),
@@ -179,7 +179,7 @@ private fun HexResult(result: String) {
                 if (bmgStringIsValid(result)) {
                     clipboardManager.setText(AnnotatedString(hexResult))
                     Toast
-                        .makeText(context, "Copied answer to clipboard!", Toast.LENGTH_SHORT)
+                        .makeText(context, "Copied the answer to clipboard!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }),

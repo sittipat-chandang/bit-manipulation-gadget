@@ -2,6 +2,7 @@ package org.classup.bitmanipulationgadget.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -149,6 +150,8 @@ private fun InputCard(pagerState: PagerState, input: String, shiftCount: String,
                 )
             }
         }
+
+        PageIndicatorLayout(3, pagerState)
     }
 }
 
@@ -158,7 +161,7 @@ private fun SolutionCard(shiftType: BitwiseShiftType, inputBinary: String, shift
     val inputBinaryPadded = if (bmgStringIsValid(inputBinary)) padBinary64(inputBinary) else INVALID_TEXT
     val resultPadded = if (bmgStringIsValid(resultBinary)) padBinary64(resultBinary) else INVALID_TEXT
 
-    val pages = if (bmgStringIsValid(inputBinaryPadded)) inputBinaryPadded.length / 16 else 1
+    val pages = if (bmgStringIsValid(inputBinaryPadded)) 4 else 1
 
     val pagerState = rememberPagerState(pageCount = { pages })
 

@@ -31,7 +31,6 @@ import androidx.navigation.compose.rememberNavController
 import org.classup.bitmanipulationgadget.navigation.Destinations
 import org.classup.bitmanipulationgadget.navigation.NavItemInfo
 import org.classup.bitmanipulationgadget.screens.BitwiseComparisonOperation
-import org.classup.bitmanipulationgadget.screens.BitwiseShiftType
 import org.classup.bitmanipulationgadget.screens.ComparisonScreen
 import org.classup.bitmanipulationgadget.screens.ComplementScreen
 import org.classup.bitmanipulationgadget.screens.ShiftScreen

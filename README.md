@@ -8,7 +8,9 @@ programming.
 An apk is provided in the release section.
 
 ## Screenshots
-![Comparison.png](Comparison.png) ![Complement.png](Complement.png) ![Shift.png](Shift.png)
+
+| ![Comparison.png](Comparison.png) | ![Complement.png](Complement.png) | ![Shift.png](Shift.png) |
+|-----------------------------------|-----------------------------------|-------------------------|
 
 ## Development
 The repository can be opened in Android Studio directly.

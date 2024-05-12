@@ -118,7 +118,7 @@ private fun InputCard(pagerState: PagerState, input: String, shiftCount: String,
         colors = CardDefaults.cardColors(containerColor = BMGOrangeBrighter)
     )
     {
-        HorizontalPager(state = pagerState) {page ->
+        HorizontalPager(state = pagerState) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()

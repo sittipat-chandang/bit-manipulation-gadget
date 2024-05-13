@@ -47,7 +47,7 @@ fun ShiftScreen(input: String, shiftCount: String, rememberInputs: (String, Stri
     var resultBinary = INVALID_TEXT
     val checkedShiftCount = try {
         val shiftCountFormatted = shiftCount.toInt()
-        if (shiftCountFormatted in 1..64) shiftCountFormatted else 0
+        if (shiftCountFormatted in 1..63) shiftCountFormatted else 0
     } catch (_: Exception) {
         0
     }
@@ -142,7 +142,7 @@ private fun InputCard(pagerState: PagerState, input: String, shiftCount: String,
                     value = shiftCount,
                     textStyle = textFieldTextStyle,
                     onValueChange = { rememberInputs(input, it) },
-                    label = { Text("Shift count (0-64)", fontSize = 16.sp, color = BMGTextUnfocused) },
+                    label = { Text("Shift count (0-63)", fontSize = 16.sp, color = BMGTextUnfocused) },
                     colors = textFieldColors,
                     singleLine = true,
                     modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)

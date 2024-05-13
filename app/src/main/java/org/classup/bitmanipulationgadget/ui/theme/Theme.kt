@@ -40,8 +40,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun BitManipulationGadgetTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     // KEEP DYNAMIC COLOR OFF BY DEFAULT. IT IS STUPID!
+    darkTheme: Boolean = false,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
